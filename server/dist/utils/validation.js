@@ -9,6 +9,11 @@ const validation = (options) => {
             ],
         };
     }
+    if (options.username.includes("@")) {
+        return {
+            errors: [{ field: "username", message: "Username cannot contain @" }],
+        };
+    }
     if (options.username.length <= 2) {
         return {
             errors: [

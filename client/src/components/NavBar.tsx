@@ -11,20 +11,25 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
   const [{ data, fetching }, getUser] = useMeQuery({ pause: isServer() });
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
   return (
-    <Flex bg="royalblue" justify="space-around" p={4}>
+    <Flex bg="#4b4c9f" justify="space-around" p={4}>
       <Box d={"flex"} alignItems="center">
         <NextLink href="/">
-          <Link mx={2} fontSize="36px">
+          <Link mx={2} fontSize="36px" color="#93cedb">
             OMNICOMMERCE
           </Link>
         </NextLink>
 
         <NextLink href="/register">
-          <Link mx={2}>REGISTER</Link>
+          <Link mx={2} color="whiteAlpha.800">
+            REGISTER
+          </Link>
         </NextLink>
       </Box>
       {data?.me ? (
         <Center>
+          <Badge variant="outline" colorScheme="whiteAlpha">
+            Welcome back, {data.me.username}
+          </Badge>
           <Button
             onClick={() => {
               logout();
@@ -32,17 +37,17 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
             }}
             isLoading={logoutFetching}
             textDecor="none"
+            mx={6}
           >
             LOGOUT
           </Button>
-          <Badge variant="outline" colorScheme="whiteAlpha">
-            Welcome back, {data.me.username}
-          </Badge>
         </Center>
       ) : (
         <Center>
           <NextLink href="/login">
-            <Link textDecor="none">LOGIN</Link>
+            <Link textDecor="none" color="whiteAlpha.800">
+              LOGIN
+            </Link>
           </NextLink>
         </Center>
       )}

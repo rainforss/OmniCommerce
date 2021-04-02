@@ -55,6 +55,13 @@ const login: React.FC<loginProps> = () => {
               >
                 LOGIN
               </Button>
+              <Button
+                float="right"
+                my={4}
+                onClick={() => router.push("/reset-password")}
+              >
+                Forgot Password
+              </Button>
             </Form>
           )}
         </Formik>

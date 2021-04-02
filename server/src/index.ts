@@ -10,10 +10,9 @@ import "reflect-metadata";
 import { UserResolver } from "./resolvers/users";
 import session from "express-session";
 import connectRedis from "connect-redis";
-import redis from "redis";
+import Redis from "ioredis";
 import { MyContext } from "./types";
 import cors from "cors";
-import { User } from "./entities/User";
 
 declare module "express-session" {
   interface Session {
@@ -25,7 +24,7 @@ const main = async () => {
   const orm = await MikroORM.init(mikroConfig);
 
   const RedisStore = connectRedis(session);
-  const redisClient = redis.createClient();
+  const redisClient = new Redis();
 
   await orm.getMigrator().up();
   // const post = orm.em.create(Post, { title: "my first post" });
@@ -62,7 +61,12 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
+    context: ({ req, res }): MyContext => ({
+      em: orm.em,
+      req,
+      res,
+      redisClient,
+    }),
   });
 
   apolloServer.applyMiddleware({
