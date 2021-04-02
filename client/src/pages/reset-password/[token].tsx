@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { GetServerSideProps, NextPage } from "next";
-import { withUrqlClient, NextComponentType, WithUrqlProps } from "next-urql";
+import { withUrqlClient, WithUrqlProps } from "next-urql";
 import router from "next/dist/client/router";
 import React, { useState } from "react";
 import { InputField } from "../../components/InputField";

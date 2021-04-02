@@ -1,6 +1,6 @@
 import { Badge, Box, Center, Flex, Link } from "@chakra-ui/layout";
 import React from "react";
-import { useLogoutMutation, useMeQuery, User } from "../generated/graphql";
+import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 import NextLink from "next/link";
 import { Button } from "@chakra-ui/button";
 import { isServer } from "../utils/isServer";
@@ -8,7 +8,7 @@ import { isServer } from "../utils/isServer";
 interface NavBarProps {}
 
 const NavBar: React.FC<NavBarProps> = ({}) => {
-  const [{ data, fetching }, getUser] = useMeQuery({ pause: isServer() });
+  const [{ data }, getUser] = useMeQuery({ pause: isServer() });
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
   return (
     <Flex bg="#4b4c9f" justify="space-around" p={4}>
