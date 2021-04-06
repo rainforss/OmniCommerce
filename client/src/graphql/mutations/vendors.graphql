@@ -1,0 +1,12 @@
+query Vendors {
+  vendors {
+    name
+    uuid
+    createdBy {
+      username
+    }
+    modifiedBy {
+      username
+    }
+  }
+}

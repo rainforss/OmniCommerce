@@ -13,6 +13,8 @@ import connectRedis from "connect-redis";
 import Redis from "ioredis";
 import { MyContext } from "./types";
 import cors from "cors";
+import { VendorResolver } from "./resolvers/vendors";
+import { EntityManager } from "@mikro-orm/postgresql";
 
 declare module "express-session" {
   interface Session {
@@ -22,11 +24,14 @@ declare module "express-session" {
 
 const main = async () => {
   const orm = await MikroORM.init(mikroConfig);
-
+  orm.em as EntityManager;
   const RedisStore = connectRedis(session);
   const redisClient = new Redis();
 
   await orm.getMigrator().up();
+
+  // await orm.em.nativeDelete(Vendor, {});
+
   // const post = orm.em.create(Post, { title: "my first post" });
   // await orm.em.persistAndFlush(post);
   // const posts = await orm.em.find(Post, {});
@@ -58,7 +63,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, PostResolver, UserResolver],
+      resolvers: [HelloResolver, PostResolver, UserResolver, VendorResolver],
       validate: false,
     }),
     context: ({ req, res }): MyContext => ({

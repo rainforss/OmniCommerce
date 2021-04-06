@@ -3,6 +3,7 @@ import { Post } from "./entities/Post";
 import { MikroORM } from "@mikro-orm/core";
 import path from "path";
 import { User } from "./entities/User";
+import { Vendor } from "./entities/Vendor";
 
 export default {
   migrations: {
@@ -12,7 +13,7 @@ export default {
   dbName: "omnicommerce",
   debug: !__prod__,
   type: "postgresql",
-  entities: [Post, User],
+  entities: [Post, User, Vendor],
   user: "postgres",
   password: "930614",
 } as Parameters<typeof MikroORM.init>[0];

@@ -1,0 +1,15 @@
+mutation CreateVendor($name: String!) {
+  createVendor(name: $name) {
+    errors {
+      ...RegularError
+    }
+    vendor {
+      createdBy {
+        username
+      }
+      modifiedBy {
+        username
+      }
+    }
+  }
+}

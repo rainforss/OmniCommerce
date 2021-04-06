@@ -1,5 +1,12 @@
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
+import {
+  Collection,
+  Entity,
+  OneToMany,
+  PrimaryKey,
+  Property,
+} from "@mikro-orm/core";
 import { Field, ObjectType } from "type-graphql";
+import { Vendor } from "./Vendor";
 
 @ObjectType()
 @Entity()
@@ -26,4 +33,10 @@ export class User {
 
   @Property({ type: "text" })
   password!: string;
+
+  @OneToMany({ entity: () => Vendor, mappedBy: (vendor) => vendor.createdBy })
+  createdVendors = new Collection<Vendor>(this);
+
+  @OneToMany({ entity: () => Vendor, mappedBy: (vendor) => vendor.modifiedBy })
+  modifiedVendors = new Collection<Vendor>(this);
 }

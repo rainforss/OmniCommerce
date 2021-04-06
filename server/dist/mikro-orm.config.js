@@ -7,6 +7,7 @@ const constants_1 = require("./constants");
 const Post_1 = require("./entities/Post");
 const path_1 = __importDefault(require("path"));
 const User_1 = require("./entities/User");
+const Vendor_1 = require("./entities/Vendor");
 exports.default = {
     migrations: {
         path: path_1.default.join(__dirname, "./migrations"),
@@ -15,7 +16,7 @@ exports.default = {
     dbName: "omnicommerce",
     debug: !constants_1.__prod__,
     type: "postgresql",
-    entities: [Post_1.Post, User_1.User],
+    entities: [Post_1.Post, User_1.User, Vendor_1.Vendor],
     user: "postgres",
     password: "930614",
 };

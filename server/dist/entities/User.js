@@ -12,10 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const core_1 = require("@mikro-orm/core");
 const type_graphql_1 = require("type-graphql");
+const Vendor_1 = require("./Vendor");
 let User = class User {
     constructor() {
         this.createdAt = new Date();
         this.updatedAt = new Date();
+        this.createdVendors = new core_1.Collection(this);
+        this.modifiedVendors = new core_1.Collection(this);
     }
 };
 __decorate([
@@ -47,6 +50,14 @@ __decorate([
     core_1.Property({ type: "text" }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    core_1.OneToMany({ entity: () => Vendor_1.Vendor, mappedBy: (vendor) => vendor.createdBy }),
+    __metadata("design:type", Object)
+], User.prototype, "createdVendors", void 0);
+__decorate([
+    core_1.OneToMany({ entity: () => Vendor_1.Vendor, mappedBy: (vendor) => vendor.modifiedBy }),
+    __metadata("design:type", Object)
+], User.prototype, "modifiedVendors", void 0);
 User = __decorate([
     type_graphql_1.ObjectType(),
     core_1.Entity()
