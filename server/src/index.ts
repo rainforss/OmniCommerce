@@ -4,16 +4,15 @@ import mikroConfig from "./mikro-orm.config";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
-import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import "reflect-metadata";
-import { UserResolver } from "./resolvers/users";
+import { UserResolver } from "./resolvers/user";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import Redis from "ioredis";
 import { MyContext } from "./types";
 import cors from "cors";
-import { VendorResolver } from "./resolvers/vendors";
+import { VendorResolver } from "./resolvers/vendor";
 import { EntityManager } from "@mikro-orm/postgresql";
 
 declare module "express-session" {
@@ -63,8 +62,8 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, PostResolver, UserResolver, VendorResolver],
-      validate: false,
+      resolvers: [PostResolver, UserResolver, VendorResolver],
+      validate: true,
     }),
     context: ({ req, res }): MyContext => ({
       em: orm.em,

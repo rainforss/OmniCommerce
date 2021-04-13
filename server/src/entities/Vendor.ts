@@ -13,28 +13,20 @@ import { User } from "./User";
 @ObjectType()
 @Entity()
 export class Vendor {
-  @Field()
+  @Field(() => String)
   @PrimaryKey()
-  uuid: string = v4();
+  id: string = v4();
 
   @Field(() => String)
   @Property({ type: "date" })
   createdAt = new Date();
 
-  @Field()
-  @Property()
-  createdById: number;
-
   @Field(() => User)
   @ManyToOne({ entity: () => User })
   createdBy: User;
 
-  @Field()
-  @Property()
-  modifiedById?: number;
-
-  @Field(() => User)
-  @ManyToOne({ entity: () => User })
+  @Field(() => User, { nullable: true })
+  @ManyToOne({ entity: () => User, nullable: true })
   modifiedBy?: User;
 
   @Field(() => String)

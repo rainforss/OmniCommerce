@@ -16,8 +16,6 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  hello: Scalars['String'];
-  test: Scalars['String'];
   posts: Array<Post>;
   post?: Maybe<Post>;
   me?: Maybe<User>;
@@ -32,7 +30,7 @@ export type QueryPostArgs = {
 
 
 export type QueryVendorArgs = {
-  uuid: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type Post = {
@@ -54,12 +52,10 @@ export type User = {
 
 export type Vendor = {
   __typename?: 'Vendor';
-  uuid: Scalars['String'];
+  id: Scalars['String'];
   createdAt: Scalars['String'];
-  createdById: Scalars['Float'];
   createdBy: User;
-  modifiedById: Scalars['Float'];
-  modifiedBy: User;
+  modifiedBy?: Maybe<User>;
   updatedAt: Scalars['String'];
   name: Scalars['String'];
   value: Scalars['String'];
@@ -76,7 +72,7 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
   createVendor: VendorResponse;
-  updateVendor?: Maybe<Vendor>;
+  updateVendor?: Maybe<VendorResponse>;
   deleteVendor?: Maybe<Vendor>;
 };
 
@@ -126,12 +122,12 @@ export type MutationCreateVendorArgs = {
 
 export type MutationUpdateVendorArgs = {
   name?: Maybe<Scalars['String']>;
-  uuid: Scalars['String'];
+  id: Scalars['String'];
 };
 
 
 export type MutationDeleteVendorArgs = {
-  uuid: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -202,15 +198,29 @@ export type CreateVendorMutation = (
       & RegularErrorFragment
     )>>, vendor?: Maybe<(
       { __typename?: 'Vendor' }
+      & Pick<Vendor, 'name' | 'id'>
       & { createdBy: (
         { __typename?: 'User' }
         & Pick<User, 'username'>
-      ), modifiedBy: (
+      ), modifiedBy?: Maybe<(
         { __typename?: 'User' }
         & Pick<User, 'username'>
-      ) }
+      )> }
     )> }
   ) }
+);
+
+export type DeleteVendorMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteVendorMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteVendor?: Maybe<(
+    { __typename?: 'Vendor' }
+    & Pick<Vendor, 'id' | 'name'>
+  )> }
 );
 
 export type ForgotPasswordMutationVariables = Exact<{
@@ -292,6 +302,33 @@ export type RegisterMutation = (
   ) }
 );
 
+export type UpdateVendorMutationVariables = Exact<{
+  id: Scalars['String'];
+  name: Scalars['String'];
+}>;
+
+
+export type UpdateVendorMutation = (
+  { __typename?: 'Mutation' }
+  & { updateVendor?: Maybe<(
+    { __typename?: 'VendorResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & RegularErrorFragment
+    )>>, vendor?: Maybe<(
+      { __typename?: 'Vendor' }
+      & Pick<Vendor, 'name' | 'id'>
+      & { createdBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ), modifiedBy?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      )> }
+    )> }
+  )> }
+);
+
 export type VendorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -299,14 +336,14 @@ export type VendorsQuery = (
   { __typename?: 'Query' }
   & { vendors: Array<(
     { __typename?: 'Vendor' }
-    & Pick<Vendor, 'name' | 'uuid'>
+    & Pick<Vendor, 'name' | 'id'>
     & { createdBy: (
       { __typename?: 'User' }
       & Pick<User, 'username'>
-    ), modifiedBy: (
+    ), modifiedBy?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
-    ) }
+    )> }
   )> }
 );
 
@@ -346,6 +383,8 @@ export const CreateVendorDocument = gql`
       ...RegularError
     }
     vendor {
+      name
+      id
       createdBy {
         username
       }
@@ -359,6 +398,18 @@ export const CreateVendorDocument = gql`
 
 export function useCreateVendorMutation() {
   return Urql.useMutation<CreateVendorMutation, CreateVendorMutationVariables>(CreateVendorDocument);
+};
+export const DeleteVendorDocument = gql`
+    mutation DeleteVendor($id: String!) {
+  deleteVendor(id: $id) {
+    id
+    name
+  }
+}
+    `;
+
+export function useDeleteVendorMutation() {
+  return Urql.useMutation<DeleteVendorMutation, DeleteVendorMutationVariables>(DeleteVendorDocument);
 };
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
@@ -437,11 +488,34 @@ ${UserInfoFragmentDoc}`;
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
+export const UpdateVendorDocument = gql`
+    mutation UpdateVendor($id: String!, $name: String!) {
+  updateVendor(id: $id, name: $name) {
+    errors {
+      ...RegularError
+    }
+    vendor {
+      name
+      id
+      createdBy {
+        username
+      }
+      modifiedBy {
+        username
+      }
+    }
+  }
+}
+    ${RegularErrorFragmentDoc}`;
+
+export function useUpdateVendorMutation() {
+  return Urql.useMutation<UpdateVendorMutation, UpdateVendorMutationVariables>(UpdateVendorDocument);
+};
 export const VendorsDocument = gql`
     query Vendors {
   vendors {
     name
-    uuid
+    id
     createdBy {
       username
     }

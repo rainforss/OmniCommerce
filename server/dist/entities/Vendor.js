@@ -25,7 +25,7 @@ const uuid_1 = require("uuid");
 const User_1 = require("./User");
 let Vendor = class Vendor {
     constructor() {
-        this.uuid = uuid_1.v4();
+        this.id = uuid_1.v4();
         this.createdAt = new Date();
         this.updatedAt = new Date();
     }
@@ -38,33 +38,23 @@ let Vendor = class Vendor {
     }
 };
 __decorate([
-    type_graphql_1.Field(),
+    type_graphql_1.Field(() => String),
     core_1.PrimaryKey(),
     __metadata("design:type", String)
-], Vendor.prototype, "uuid", void 0);
+], Vendor.prototype, "id", void 0);
 __decorate([
     type_graphql_1.Field(() => String),
     core_1.Property({ type: "date" }),
     __metadata("design:type", Object)
 ], Vendor.prototype, "createdAt", void 0);
 __decorate([
-    type_graphql_1.Field(),
-    core_1.Property(),
-    __metadata("design:type", Number)
-], Vendor.prototype, "createdById", void 0);
-__decorate([
     type_graphql_1.Field(() => User_1.User),
     core_1.ManyToOne({ entity: () => User_1.User }),
     __metadata("design:type", User_1.User)
 ], Vendor.prototype, "createdBy", void 0);
 __decorate([
-    type_graphql_1.Field(),
-    core_1.Property(),
-    __metadata("design:type", Number)
-], Vendor.prototype, "modifiedById", void 0);
-__decorate([
-    type_graphql_1.Field(() => User_1.User),
-    core_1.ManyToOne({ entity: () => User_1.User }),
+    type_graphql_1.Field(() => User_1.User, { nullable: true }),
+    core_1.ManyToOne({ entity: () => User_1.User, nullable: true }),
     __metadata("design:type", User_1.User)
 ], Vendor.prototype, "modifiedBy", void 0);
 __decorate([

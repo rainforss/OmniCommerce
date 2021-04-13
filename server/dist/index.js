@@ -18,15 +18,14 @@ const mikro_orm_config_1 = __importDefault(require("./mikro-orm.config"));
 const express_1 = __importDefault(require("express"));
 const apollo_server_express_1 = require("apollo-server-express");
 const type_graphql_1 = require("type-graphql");
-const hello_1 = require("./resolvers/hello");
 const post_1 = require("./resolvers/post");
 require("reflect-metadata");
-const users_1 = require("./resolvers/users");
+const user_1 = require("./resolvers/user");
 const express_session_1 = __importDefault(require("express-session"));
 const connect_redis_1 = __importDefault(require("connect-redis"));
 const ioredis_1 = __importDefault(require("ioredis"));
 const cors_1 = __importDefault(require("cors"));
-const vendors_1 = require("./resolvers/vendors");
+const vendor_1 = require("./resolvers/vendor");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const orm = yield core_1.MikroORM.init(mikro_orm_config_1.default);
     orm.em;
@@ -54,8 +53,8 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield type_graphql_1.buildSchema({
-            resolvers: [hello_1.HelloResolver, post_1.PostResolver, users_1.UserResolver, vendors_1.VendorResolver],
-            validate: false,
+            resolvers: [post_1.PostResolver, user_1.UserResolver, vendor_1.VendorResolver],
+            validate: true,
         }),
         context: ({ req, res }) => ({
             em: orm.em,

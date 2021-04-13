@@ -1,5 +1,5 @@
-mutation CreateVendor($name: String!) {
-  createVendor(name: $name) {
+mutation UpdateVendor($id: String!, $name: String!) {
+  updateVendor(id: $id, name: $name) {
     errors {
       ...RegularError
     }
